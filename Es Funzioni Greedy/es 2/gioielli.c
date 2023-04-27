@@ -40,41 +40,39 @@ Gioiello* CompraGioielli(const char* filename, float budget, size_t* ret_size) {
 		}
 		crt = fscanf(f, "%i %f %f\n", &gioielli[size_gio].codice, &gioielli[size_gio].peso, &gioielli[size_gio].prezzo);
 	}
+	fclose(f);
 	ap_gioielli = realloc(ap_gioielli, size_ap * sizeof(float));
 	gioielli = realloc(gioielli, size_gio * sizeof(Gioiello));
 
 	Gioiello* ret = malloc(size_ap * sizeof(Gioiello));
 	int i_ret = 0;
 
-	int* indici = calloc(size_ap, sizeof(int));
-	int i_indici = 0;
+	int best_j = 0;
 
-	for (int j = 0; j < size_ap; j++) {
-		if (ap_gioielli[indici[i_indici]] > ap_gioielli[j]) {
-			indici[i_indici] = j;
-		}
-	}
+	bool crtt = true;
 
-	for (int j = 0; j < size_ap; j++) {
-		if()
-
-	}
-
-
-	for (int i = 0; i < size_gio; i++) {
-
-		// trovo la migliore
-		int best_j = 0;
-
-
-		for (int j = 0; j < size_ap; j++) {
-			if (gioielli[best_j].peso == -1) {
-				best_j = j
+	while (crtt) {
+		// controllo se ho delle scelte a disposizione
+		crtt = false;
+		for (int z = 0; z < size_gio; z++) {
+			if (budget - gioielli[z].prezzo >= 0 && gioielli[z].peso != -1) {
+				crtt = true;
+				break;
 			}
-			if (ap_gioielli[best_j] > ap_gioielli[j] && gioielli[j].peso != -1) {
+		}
+
+		// cerco la soluzione migliore
+		for (int j = 0; j < size_ap; j++) {
+
+			// cambio migliore se ho in considerazione quello gia preso
+			if (gioielli[best_j].peso == -1 && best_j != j) {
 				best_j = j;
 			}
 
+			// trovo la soluzione migliore
+			if (ap_gioielli[best_j] < ap_gioielli[j] && gioielli[j].peso != -1) {
+				best_j = j;
+			}
 		}
 
 		if (budget >= gioielli[best_j].prezzo) {
@@ -82,13 +80,18 @@ Gioiello* CompraGioielli(const char* filename, float budget, size_t* ret_size) {
 			ret[i_ret].codice = gioielli[best_j].codice;
 			ret[i_ret].prezzo = gioielli[best_j].prezzo;
 			ret[i_ret].peso = gioielli[best_j].peso;
-			gioielli[best_j].peso = -1;
 
 			i_ret++;
 		}
 
+		gioielli[best_j].peso = -1;
 	}
 
+	free(ap_gioielli);
+	free(gioielli);
+
+
+	*ret_size = i_ret;
 	return ret;
 
 

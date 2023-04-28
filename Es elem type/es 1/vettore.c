@@ -54,7 +54,6 @@ Vector* VectorReadSorted(const char* filename) {
 	if (crt_read == 0) {
 		return NULL;
 	}
-	bool find = false;
 
 	while (crt_read == 1) {
 		// aumento la dimensione del Vector

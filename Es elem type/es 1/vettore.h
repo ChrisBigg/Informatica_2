@@ -5,7 +5,6 @@
 
 #include "elemtype.h"
 #include <stdlib.h>
-#include <stdbool.h>
 
 
 typedef struct {

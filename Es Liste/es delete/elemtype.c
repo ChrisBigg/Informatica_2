@@ -51,13 +51,7 @@ void ElemDelete(ElemType* e) {
 	// compilatore potrebbe segnalare il mancato utilizzo di e, come warning
 	// o come errore. Utilizzando la macro _unused sopra definita eliminiamo
 	// questo problema.
-	free(e->city);
-	free(e->name);
-	free(&e->number);
-	free(e->postal_code);
-	free(e->province);
-	free(e->street);
-	free(e);
+	_unused(e);
 }
 
 int ElemRead(FILE* f, ElemType* e) {

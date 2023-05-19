@@ -28,10 +28,10 @@ Node* BstInsert(const ElemType* e, Node* n) {
 				t->left = NULL;
 				t->right = NULL;
 				if (ElemCompare(TreeGetRootValue(tmp), e) < 0) {
-					tmp->left = t;
+					tmp->right = t;
 				}
 				else {
-					tmp->right = t;
+					tmp->left = t;
 				}
 
 				return n;
@@ -55,10 +55,10 @@ Node* BstInsert(const ElemType* e, Node* n) {
 				t->left = NULL;
 				t->right = NULL;
 				if (ElemCompare(TreeGetRootValue(tmp), e) < 0) {
-					tmp->left = t;
+					tmp->right = t;
 				}
 				else {
-					tmp->right = t;
+					tmp->left = t;
 				}
 
 				return n;
@@ -71,30 +71,34 @@ Node* BstInsert(const ElemType* e, Node* n) {
 }
 
 
+Node* BstInsertRec(const ElemType* e, Node* n) {
+	return 0;
+}
 
 
-//int main(void) {
-//	ElemType e = 1;
-//	Node* tmp, * tmp2;
-//	Node* left = TreeCreateRoot(&e, NULL, NULL);
-//	e = 2;
-//	Node* right = TreeCreateRoot(&e, NULL, NULL);
-//	e = 1;
-//	tmp = TreeCreateRoot(&e, left, right);
-//	e = 3;
-//	tmp = TreeCreateRoot(&e, tmp, NULL);
-//	e = 5;
-//	left = TreeCreateRoot(&e, NULL, NULL);
-//	e = 8;
-//	right = TreeCreateRoot(&e, NULL, NULL);
-//	e = 7;
-//	tmp2 = TreeCreateRoot(&e, left, right);
-//	e = 4;
-//	tmp = TreeCreateRoot(&e, tmp, tmp2);
-//
-//	e = 6;
-//	TreeWriteStdoutInOrder(BstInsert(&e, tmp));
-//
-//
-//	return 0;
-//}
+
+int main(void) {
+	ElemType e = 1;
+	Node* tmp, * tmp2;
+	Node* left = TreeCreateRoot(&e, NULL, NULL);
+	e = 2;
+	Node* right = TreeCreateRoot(&e, NULL, NULL);
+	e = 1;
+	tmp = TreeCreateRoot(&e, left, right);
+	e = 3;
+	tmp = TreeCreateRoot(&e, tmp, NULL);
+	e = 5;
+	left = TreeCreateRoot(&e, NULL, NULL);
+	e = 8;
+	right = TreeCreateRoot(&e, NULL, NULL);
+	e = 7;
+	tmp2 = TreeCreateRoot(&e, left, right);
+	e = 4;
+	tmp = TreeCreateRoot(&e, tmp, tmp2);
+
+	e = 12;
+	TreeWriteStdoutInOrder(BstInsert(&e, tmp));
+
+
+	return 0;
+}

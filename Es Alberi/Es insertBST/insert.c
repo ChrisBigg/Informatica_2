@@ -9,13 +9,12 @@ Node* BstInsert(const ElemType* e, Node* n) {
 	Node* tmp = n, * padre;
 	bool crt = true;
 
-
 	while (crt) {
 		padre = tmp;
 		if (ElemCompare(e, TreeGetRootValue(tmp)) > 0) {
 			tmp = TreeRight(tmp);
 
-			if (ElemCompare(TreeGetRootValue(tmp), e) < 0) {
+			if (ElemCompare(e, TreeGetRootValue(tmp)) < 0) {
 				tmp = TreeCreateRoot(e, NULL, TreeRight(padre));
 				padre->right = tmp;
 
@@ -36,13 +35,11 @@ Node* BstInsert(const ElemType* e, Node* n) {
 
 				return n;
 			}
-
-
 		}
 		else {
 			tmp = TreeLeft(tmp);
 
-			if (ElemCompare(TreeGetRootValue(tmp), e) < 0) {
+			if (ElemCompare(e, TreeGetRootValue(tmp)) < 0) {
 				tmp = TreeCreateRoot(e, TreeLeft(padre), NULL);
 				padre->left = tmp;
 
@@ -63,16 +60,74 @@ Node* BstInsert(const ElemType* e, Node* n) {
 
 				return n;
 			}
-
 		}
 	}
 	return n;
+}
 
+void BstInsertRecRec(const ElemType* e, Node* tmp, Node* padre, bool* crt_insert) {
+	if (*crt_insert) {
+		return;
+	}
+
+	padre = tmp;
+
+	if (ElemCompare(e, TreeGetRootValue(tmp)) > 0) {
+		tmp = TreeRight(tmp);
+
+		if (ElemCompare(e, TreeGetRootValue(tmp)) < 0) {
+			tmp = TreeCreateRoot(e, NULL, TreeRight(padre));
+			padre->right = tmp;
+
+			*crt_insert = true;
+			return;
+		}
+	}
+	else {
+
+		tmp = TreeLeft(tmp);
+
+		if (ElemCompare(e, TreeGetRootValue(tmp)) < 0) {
+			tmp = TreeCreateRoot(e, TreeLeft(padre), NULL);
+			padre->left = tmp;
+
+			*crt_insert = true;
+			return;
+		}
+	}
+
+	if (TreeIsLeaf(tmp)) {
+		Node* t = malloc(sizeof(Node));
+		t->value = ElemCopy(e);
+		t->left = NULL;
+		t->right = NULL;
+		if (ElemCompare(TreeGetRootValue(tmp), e) < 0) {
+			tmp->right = t;
+		}
+		else {
+			tmp->left = t;
+		}
+
+		*crt_insert = true;
+		return;
+	}
+
+		BstInsertRecRec(e, tmp, padre, crt_insert);
 }
 
 
+
 Node* BstInsertRec(const ElemType* e, Node* n) {
-	return 0;
+	if (TreeIsEmpty(n)) {
+		return TreeCreateRoot(e, NULL, NULL);
+	}
+	Node* tmp = n, * padre = tmp;
+	bool crt_insert = false;
+
+
+	BstInsertRecRec(e, tmp, padre, &crt_insert);
+
+	return n;
 }
 
 
@@ -89,7 +144,7 @@ int main(void) {
 	tmp = TreeCreateRoot(&e, tmp, NULL);
 	e = 5;
 	left = TreeCreateRoot(&e, NULL, NULL);
-	e = 8;
+	e = 9;
 	right = TreeCreateRoot(&e, NULL, NULL);
 	e = 7;
 	tmp2 = TreeCreateRoot(&e, left, right);
@@ -97,7 +152,7 @@ int main(void) {
 	tmp = TreeCreateRoot(&e, tmp, tmp2);
 
 	e = 12;
-	TreeWriteStdoutInOrder(BstInsert(&e, tmp));
+	TreeWriteStdoutInOrder(BstInsertRec(&e, tmp));
 
 
 	return 0;
